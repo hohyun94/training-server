@@ -1,0 +1,12 @@
+node_modules
+dist
+.env
+.env.local
+data/uploads/*
+!data/uploads/.gitkeep
+shots/cdp-profile
+shots/profile
+shots/p[0-9]*
+shots/*.log
+*.log
+.DS_Store

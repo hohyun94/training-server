@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: training
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-training}
+      POSTGRES_DB: training
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U training -d training']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://training:${POSTGRES_PASSWORD:-training}@db:5432/training
+      PORT: 8080
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-change-me}
+      JWT_SECRET: ${JWT_SECRET:-please-change-this-to-a-long-random-string}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-}
+      UPLOAD_DIR: /data/uploads
+    volumes:
+      - uploads:/data/uploads
+    ports:
+      - '8080:8080'
+
+volumes:
+  db-data:
+  uploads:

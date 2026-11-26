@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: training
+          POSTGRES_PASSWORD: training
+          POSTGRES_DB: training
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U training -d training"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgres://training:training@127.0.0.1:5432/training
+      ADMIN_PASSWORD: letmein
+      JWT_SECRET: ci-secret-ci-secret-ci-secret-ci-secret
+      PORT: 8080
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Migrate
+        run: npm run db:migrate
+
+      - name: Seed (demo)
+        run: npm run db:seed
+
+      - name: Build
+        run: npm run build
+
+      - name: Smoke test
+        run: |
+          node dist/index.js &
+          for i in $(seq 1 40); do
+            if curl -sf http://127.0.0.1:8080/api/public/health > /dev/null; then
+              echo "server is up"
+              break
+            fi
+            sleep 1
+          done
+          node scripts/smoke.mjs

@@ -1,0 +1,120 @@
+{
+  "title": "방법론 실습 (예시)",
+  "stages": [
+    {
+      "title": "1단계 · 문제 정의",
+      "goal": "우리가 풀 문제를 한 문장으로 정의한다.",
+      "timeLimitSec": 600,
+      "missions": [
+        {
+          "title": "문제 한 문장",
+          "prompt": "누가 / 무엇을 / 왜 가 드러나게 한 문장으로 적어주세요.",
+          "inputType": "longtext",
+          "maxLen": 300,
+          "allowEdit": true,
+          "required": true
+        }
+      ],
+      "slides": [
+        {
+          "type": "markdown",
+          "content": "# 1단계 · 문제 정의\n\n- 해결책은 아직 쓰지 않는다\n- **한 문장**으로\n- 누가(Who) · 무엇을(What) · 왜(Why)"
+        }
+      ]
+    },
+    {
+      "title": "2단계 · 현황 분석",
+      "goal": "As-Is 상태를 데이터와 사실로 정리한다.",
+      "timeLimitSec": 900,
+      "missions": [
+        {
+          "title": "As-Is 요약",
+          "prompt": "현재 상태를 사실 중심으로 5줄 이내로 정리해주세요.",
+          "inputType": "longtext",
+          "maxLen": 800
+        },
+        {
+          "title": "핵심 병목",
+          "prompt": "가장 큰 병목 하나를 고르고 이유를 적어주세요.",
+          "inputType": "longtext",
+          "maxLen": 500
+        }
+      ],
+      "slides": [
+        {
+          "type": "markdown",
+          "content": "# 2단계 · 현황 분석\n\n- 추측과 사실을 구분\n- 숫자로 말할 수 있으면 숫자로"
+        }
+      ]
+    },
+    {
+      "title": "3단계 · 대안 도출",
+      "goal": "가능한 대안을 2개 이상 만들고 비교한다.",
+      "timeLimitSec": 900,
+      "missions": [
+        {
+          "title": "대안 비교",
+          "prompt": "대안 2개를 장점·단점·리스크로 비교해주세요.",
+          "inputType": "longtext",
+          "maxLen": 1200
+        },
+        {
+          "title": "선택",
+          "prompt": "우리 조가 선택한 대안은?",
+          "inputType": "choice",
+          "options": ["대안 A", "대안 B", "둘의 조합"]
+        }
+      ],
+      "slides": [
+        {
+          "type": "markdown",
+          "content": "# 3단계 · 대안 도출\n\n- 최소 2개\n- 선택 기준을 먼저 합의"
+        }
+      ]
+    },
+    {
+      "title": "4단계 · 실행 계획",
+      "goal": "누가 언제 무엇을 할지 구체화한다.",
+      "timeLimitSec": 900,
+      "missions": [
+        {
+          "title": "액션 아이템",
+          "prompt": "담당자와 기한이 포함된 액션 아이템 3개 이상.",
+          "inputType": "longtext",
+          "maxLen": 1200
+        },
+        {
+          "title": "산출물 첨부",
+          "prompt": "도구로 작성한 결과물 파일 또는 링크를 첨부해주세요.",
+          "inputType": "file",
+          "required": false
+        }
+      ],
+      "slides": [
+        {
+          "type": "markdown",
+          "content": "# 4단계 · 실행 계획\n\n- 담당 / 기한 / 산출물\n- 첫 2주에 할 일부터"
+        }
+      ]
+    },
+    {
+      "title": "5단계 · 검증과 회고",
+      "goal": "결과를 검증하고 배운 점을 남긴다.",
+      "timeLimitSec": 600,
+      "missions": [
+        {
+          "title": "회고",
+          "prompt": "Keep / Problem / Try 형식으로 회고를 적어주세요.",
+          "inputType": "longtext",
+          "maxLen": 1200
+        }
+      ],
+      "slides": [
+        {
+          "type": "markdown",
+          "content": "# 5단계 · 검증과 회고\n\n- 성공 기준 대비 결과\n- Keep / Problem / Try"
+        }
+      ]
+    }
+  ]
+}

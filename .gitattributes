@@ -1,0 +1,4 @@
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+package-lock.json text eol=lf
