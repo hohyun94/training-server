@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { and, asc, count, desc, eq, inArray } from 'drizzle-orm';
 import { z } from 'zod';
-import { methodologyTemplate } from '../content/default-template.js';
+import { ax5dTemplate } from '../content/ax-5d.js';
 import { env } from '../env.js';
 import { db } from '../db/index.js';
 import {
@@ -82,7 +82,7 @@ adminRouter.post('/sessions', async (req, res) => {
     .values({ title: parsed.data.title, joinCode, status: 'draft' })
     .returning();
 
-  const template = parsed.data.withTemplate === false ? null : methodologyTemplate;
+  const template = parsed.data.withTemplate === false ? null : ax5dTemplate;
   if (template) {
     await applyTemplate(session.id, template);
   } else {

@@ -105,7 +105,8 @@ check('콘텐츠 교체', contentRes.res.ok, contentRes.text);
 const bundle = await call(admin, `/admin/sessions/${sessionId}`);
 check('관리 번들 조회', bundle.res.ok && bundle.data?.stages?.length === 5);
 const stage = bundle.data.stages[0];
-const mission = stage.missions[0];
+const mission =
+  stage.missions.find((item) => item.inputType === 'longtext') ?? stage.missions[0];
 
 const opened = await call(admin, `/admin/sessions/${sessionId}/stages/${stage.id}`, {
   method: 'PATCH',

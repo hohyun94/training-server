@@ -1,6 +1,6 @@
 # 실습 진행 서버 (training-server)
 
-5단계 방법론 실습을 **조별 제출 → 강사 리뷰 → 강의자료 송출**까지 한 곳에서 운영하는
+**AXCenter 5D 여정(Discover · Diagnose · Design · Deliver · Deepen)** 을 조별 실습으로 운영하는
 웹 서버입니다. 교육생은 모바일/노트북으로 접속하고, 강사는 프로젝터 화면과 콘솔을 함께
 사용합니다. 모든 상태는 PostgreSQL 에 저장되고 Socket.IO 로 실시간 동기화됩니다.
 
@@ -59,7 +59,7 @@ npm run build && npm start
 
 ## 강의 진행 순서 (권장)
 
-1. `/admin` 로그인 → **새 교육 만들기** (교육 이름 + 조 이름, 5단계 기본 템플릿 자동 생성)
+1. `/admin` 로그인 → **새 교육 만들기** (교육 이름 + 조 이름, AX 5D 기본 콘텐츠 자동 생성)
 2. 프로젝터에서 `메인화면 열기` → `전체화면` (QR/입장 코드가 대기 화면에 표시됨)
 3. 콘솔에서 `1단계 → 단계 열기` → 미션 클릭 → `화면에 표시`, 타이머 `시작`
 4. 제출이 들어오면 `제출물 · 리뷰 → 리뷰` 버튼 → 프로젝터가 해당 조 답안으로 전환, 피드백/점수 저장
@@ -67,17 +67,29 @@ npm run build && npm start
 6. 단계 `마감` → `집계` 화면 → `엑셀` 다운로드, 교육 종료 후 회차 상태를 `종료`로 변경
 7. 리허설 후 `제출물 초기화`로 데이터만 비우고 재사용 가능
 
-## 콘텐츠(5단계 미션/강의자료) 교체
+## 콘텐츠(5D 단계별 미션/강의자료)
 
-- 기본 템플릿: `src/content/default-template.ts`
+기본 콘텐츠는 **AXCenter(5D 과제 관리 포털)** 의 5D 계약을 그대로 옮긴 것입니다.
+
+| 단계 | 필수 산출물 (AXCenter `progress.ts` 기준) |
+| --- | --- |
+| D1 Discover · 문제 발견 | 다루는 업무 · Pain Point 1개 이상 · Future-Back(향할 방향/AI가 맡을 일/사람이 남길 일/새로 생기는 일) |
+| D2 Diagnose · 병목 진단 | BDW 1개 이상 · AI-FIT 1개 이상 · STATIK L7 분해 |
+| D3 Design · AI 전환 설계 | 문제 정의 4필드(WHAT·WHY·IMPACT·GOAL) · ZBR 4원칙 · 에이전트 명세 · KPI 1개 이상 |
+| D4 Deliver · 파일럿 실행 | 파일럿 범위·성공 기준 · KPI 측정 1건 이상 |
+| D5 Deepen · 회고와 확산 | AAR 4질문 + Keep·Stop·Start · 교훈 1개 이상 |
+
+- 원본 근거: `AXCenter/packages/ax-contracts/src/ax.ts`, `apps/ax-center/server/services/progress.ts`,
+  `apps/ax-center/client/src/pages/ax/stage-forms/*`
+- 콘텐츠 정의: `src/content/ax-5d.ts` (5단계 · 24미션 · 8슬라이드)
+- JSON 내보내기: `npm run content:export` → `docs/content.ax-5d.json`
 - 회차 단위 교체: `POST /api/admin/sessions/:sessionId/content`
-  (본문 형식은 `docs/content.example.json` 참고)
 
 ```bash
 curl -X POST http://localhost:8080/api/admin/sessions/<SESSION_ID>/content \
   -H "Content-Type: application/json" \
   -H "Cookie: ts_instructor=<로그인 쿠키>" \
-  --data-binary @docs/content.example.json
+  --data-binary @docs/content.ax-5d.json
 ```
 
 > 교체 시 해당 회차의 단계·미션·제출물이 삭제됩니다. 교육 전에만 사용하세요.
@@ -91,12 +103,12 @@ src/
   db/                   Drizzle 스키마, 마이그레이션 러너, 시드
   lib/                  인증(JWT 쿠키), 실시간, 타이머, 번들(화면별 응답 조립)
   routes/               auth / public / play / admin(+엑셀)
-  content/              기본 5단계 템플릿
+  content/              AX 5D 기본 콘텐츠(ax-5d.ts) + JSON 내보내기
 web/src/
   pages/                Landing, Join, Play, Screen, Admin, AdminConsole
   components/           Countdown, MissionCard, Screen* 패널
 drizzle/                생성된 SQL 마이그레이션
-docs/content.example.json
+docs/content.ax-5d.json
 ```
 
 ## API 요약

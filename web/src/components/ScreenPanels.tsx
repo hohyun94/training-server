@@ -119,10 +119,7 @@ export function LecturePanel({ bundle }: { bundle: ScreenBundle }) {
       <div className="w-full max-w-5xl text-white">
         <Markdown text={slide.content} className="text-3xl leading-relaxed [&_h1]:text-6xl" />
         <div className="mt-10 flex items-center justify-between text-sm text-white/30">
-          <span>
-            {bundle.stage?.seq}단계 ·{' '}
-            {bundle.stage?.title.replace(/^\d+단계\s*·\s*/, '')}
-          </span>
+          <span>{bundle.stage?.title}</span>
           <span>
             {bundle.screen.slideIndex + 1} / {bundle.stage?.slides.length ?? 1}
           </span>

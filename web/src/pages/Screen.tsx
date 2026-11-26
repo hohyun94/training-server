@@ -119,7 +119,7 @@ export default function Screen() {
                 }`}
               >
                 <span>{stage.seq}</span>
-                <span className="max-w-[7rem] truncate">{stage.title.replace(/^\d+단계\s*·\s*/, '')}</span>
+                <span className="max-w-[7rem] truncate">{stage.title}</span>
               </div>
             );
           })}

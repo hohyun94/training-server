@@ -1,5 +1,5 @@
 import { eq } from 'drizzle-orm';
-import type { SessionTemplate } from '../content/default-template.js';
+import type { SessionTemplate } from '../content/types.js';
 import { db } from '../db/index.js';
 import { missions, screenStates, slides, stages } from '../db/schema.js';
 

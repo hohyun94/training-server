@@ -153,7 +153,7 @@ export default function MissionCard({
         )}
 
         <p className="text-[11px] text-slate-400">
-          {mission.maxLen}자 이내
+          {mission.inputType !== 'choice' ? `${mission.maxLen}자 이내` : '보기 중 하나를 선택'}
           {submission?.submittedAt ? ` · ${formatTime(submission.submittedAt)} 제출` : ''}
         </p>
 

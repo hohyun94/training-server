@@ -173,7 +173,7 @@ export default function Play() {
                   : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
               }`}
             >
-              {item.seq}. {item.title.replace(/^\d+단계\s*·\s*/, '')}
+              {item.seq}. {item.title}
             </button>
           ))}
         </div>
@@ -197,7 +197,7 @@ export default function Play() {
               </span>
             </div>
             <h1 className="mt-3 text-xl font-black leading-snug text-slate-900">
-              {stage.seq}단계 · {stage.title.replace(/^\d+단계\s*·\s*/, '')}
+              {stage.title}
             </h1>
             {stage.goal && <p className="mt-1.5 text-sm text-slate-500">{stage.goal}</p>}
           </section>
