@@ -146,7 +146,17 @@ docs/content.ax-5d.json
 GitHub 에 push 하면 Coolify 가 Dockerfile 로 빌드/배포하도록 구성합니다.
 자세한 절차·환경변수·문제 해결은 **[`docs/deploy-coolify.md`](docs/deploy-coolify.md)** 를 참고하세요.
 
-요약:
+**자동 배포 (한 명령)**
+
+```bash
+Copy-Item .env.coolify.example .env.coolify   # COOLIFY_URL / COOLIFY_TOKEN / ADMIN_PASSWORD 입력
+npm run deploy:coolify -- --check             # 읽기 전용 점검
+npm run deploy:coolify -- --apply             # 프로젝트·DB·앱·환경변수·볼륨·배포
+```
+
+> private 저장소이므로 Coolify **GitHub App 에 `training-server` 접근 권한**을 먼저 부여해야 합니다.
+
+수동 절차 요약:
 
 1. Coolify 에서 PostgreSQL 리소스 생성 → internal URL 확보
 2. 이 저장소를 Dockerfile 빌드팩으로 등록, Ports `8080`, 도메인 연결

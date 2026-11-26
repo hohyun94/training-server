@@ -2,6 +2,7 @@ node_modules
 dist
 .env
 .env.local
+.env.coolify
 data/uploads/*
 !data/uploads/.gitkeep
 shots/cdp-profile

@@ -18,6 +18,7 @@
     "db:push": "drizzle-kit push",
     "db:seed": "tsx src/db/seed.ts",
     "content:export": "tsx src/content/export.ts",
+    "deploy:coolify": "node scripts/coolify-deploy.mjs",
     "setup": "npm run db:migrate && npm run db:seed"
   },
   "dependencies": {

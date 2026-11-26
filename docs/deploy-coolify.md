@@ -9,6 +9,40 @@ GitHub(main) ──push──> Coolify 빌드(Dockerfile) ──> 컨테이너(:
                                     Coolify PostgreSQL(내부 네트워크)
 ```
 
+## 0. API로 자동 배포 (권장)
+
+private 저장소이므로 먼저 **Coolify GitHub App 에 이 저장소 접근 권한**을 부여합니다.
+
+1. GitHub → **Settings → Applications → Coolify(GitHub App) → Configure**
+2. Repository access → `hohyun94/training-server` 추가 (또는 All repositories)
+3. Coolify → **Sources → GitHub App → Refresh repositories**
+
+그다음 로컬에서 실행합니다.
+
+```bash
+Copy-Item .env.coolify.example .env.coolify   # 값 입력 (git 에 커밋되지 않음)
+npm run deploy:coolify -- --check   # 서버·프로젝트·GitHub App 목록 확인 (읽기 전용)
+npm run deploy:coolify -- --plan    # 무엇을 만들지 미리보기
+npm run deploy:coolify -- --apply   # 프로젝트·DB·앱·환경변수·볼륨·배포까지
+```
+
+`.env.coolify` 필수 값: `COOLIFY_URL`, `COOLIFY_TOKEN`, `ADMIN_PASSWORD`
+권장: `JWT_SECRET`, `APP_DOMAIN`
+
+스크립트가 처리하는 일:
+
+- 프로젝트(`AX Training`)·환경(`production`) 확인 또는 생성
+- PostgreSQL(`training-db`) 생성 후 **internal URL** 확보
+- Dockerfile 앱(`training-server`) 생성 · 포트 `8080` · `/Dockerfile`
+- 환경변수: `DATABASE_URL` `ADMIN_PASSWORD` `JWT_SECRET` `PUBLIC_BASE_URL`
+  `COOKIE_SECURE` `UPLOAD_DIR` `PORT` `RUN_MIGRATIONS`
+- 볼륨 `/data/uploads`, 헬스체크 `/api/public/health`
+- 배포 실행 → 상태 폴링 → `https://도메인/api/public/health` 확인
+
+> 일부 API 스키마가 인스턴스 버전과 다르면 **경고만 남기고 계속 진행**합니다.
+> (예: 볼륨 자동 생성 실패 시 Coolify UI → Persistent Storage 에서 `/data/uploads` 만 추가)
+> 아래 수동 절차는 그대로 유효합니다.
+
 ## 1. 사전 준비
 
 - Coolify 서버(GitHub App 연결 권장)
