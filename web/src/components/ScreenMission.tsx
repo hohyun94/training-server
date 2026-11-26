@@ -5,6 +5,7 @@ import type { ScreenBundle } from '../types';
 export default function MissionPanel({ bundle }: { bundle: ScreenBundle }) {
   const mission = bundle.mission;
   const submittedTeams = bundle.teams.filter((team) => team.submitted).length;
+  const hasTimer = bundle.screen.timer.running || bundle.screen.timer.remainingSec !== null;
 
   return (
     <div className="flex flex-1 flex-col gap-7 px-10 py-8">
@@ -28,10 +29,17 @@ export default function MissionPanel({ bundle }: { bundle: ScreenBundle }) {
           )}
         </div>
 
-        <div className="shrink-0 rounded-3xl border border-white/10 bg-white/5 px-8 py-6 text-center">
-          <Countdown timer={bundle.screen.timer} size="xl" className="text-white" />
-          <p className="mt-2 text-xs uppercase tracking-widest text-white/40">남은 시간</p>
-        </div>
+        {hasTimer ? (
+          <div className="shrink-0 rounded-3xl border border-white/10 bg-white/5 px-8 py-6 text-center">
+            <Countdown timer={bundle.screen.timer} size="xl" className="text-white" />
+            <p className="mt-2 text-xs uppercase tracking-widest text-white/40">남은 시간</p>
+          </div>
+        ) : (
+          <div className="shrink-0 rounded-3xl border border-dashed border-white/10 px-8 py-6 text-center">
+            <p className="text-sm font-semibold text-white/40">타이머 대기</p>
+            <p className="mt-1 text-xs text-white/25">강사 콘솔에서 시작</p>
+          </div>
+        )}
       </div>
 
       <div className="flex items-center justify-between border-t border-white/10 pt-4">
