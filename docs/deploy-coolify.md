@@ -113,6 +113,26 @@ Dockerfile 에 `HEALTHCHECK`(`/api/public/health`)가 정의되어 있어 Coolif
 4. 휴대폰으로 QR 스캔 → 조 선택 → 미션 제출
 5. 프로젝터 화면에 제출물 표시 → 리뷰/피드백 → 엑셀 다운로드
 
+### 스모크 테스트로 한 번에 검증
+
+배포된 주소를 대상으로 전체 흐름(회차 생성 → 콘텐츠 교체 → 입장 → 제출 → 리뷰 → 피드백 →
+공지 → Q&A → 강의자료 → 집계 → 엑셀 → 회차 삭제)을 자동 점검할 수 있습니다.
+
+```powershell
+# Windows PowerShell
+$env:BASE_URL='https://training.example.com'
+$env:ADMIN_PASSWORD='<강사 비밀번호>'
+node scripts/smoke.mjs
+```
+
+```bash
+# macOS / Linux
+BASE_URL=https://training.example.com ADMIN_PASSWORD='<강사 비밀번호>' node scripts/smoke.mjs
+```
+
+- 검사용 회차를 새로 만들고 마지막에 **스스로 삭제**하므로 운영 중에도 안전합니다.
+- 실패하면 `✗` 항목과 응답 본문을 출력합니다.
+
 ## 9. 업데이트 / 롤백
 
 - push 하면 자동 재배포되며, 부팅 시 `drizzle/` 마이그레이션이 자동 적용됩니다.
