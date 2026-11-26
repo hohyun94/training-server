@@ -358,6 +358,7 @@ async function ensureStorage(uuid) {
   }
 
   const attempts = [
+    { type: 'persistent', name: 'uploads', mount_path: cfg.uploadDir },
     { type: 'volume', name: 'uploads', mount_path: cfg.uploadDir },
     { name: 'uploads', mount_path: cfg.uploadDir }
   ];
@@ -388,7 +389,10 @@ async function deployApp(uuid) {
     return null;
   }
 
-  const result = await api(`/deploy?uuid=${encodeURIComponent(uuid)}&force=true`);
+  const result = await api(`/deploy?uuid=${encodeURIComponent(uuid)}&force=true`, {
+    method: 'POST',
+    body: JSON.stringify({})
+  });
   const deploymentUuid =
     result?.deployments?.[0]?.deployment_uuid ??
     result?.deployment_uuid ??

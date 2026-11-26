@@ -151,6 +151,8 @@ BASE_URL=https://training.example.com ADMIN_PASSWORD='<강사 비밀번호>' nod
 | DB 연결 실패 | DB와 앱이 다른 Environment / internal URL 대신 public URL 사용 |
 | 재배포마다 로그아웃 | 정상 동작(JWT_SECRET 유지 시 세션 유지, 변경 시 만료) |
 | 강사 비밀번호 변경 | `ADMIN_PASSWORD` 수정 후 재배포 |
+| 503 + `CN=TRAEFIK DEFAULT CERT` | 도메인이 붙은 리소스가 실제로 없음(빈 compose/미배포). 배포 이력이 0건인지 확인 → Dockerfile 팩으로 재생성 |
+| `docker_compose_raw` 가 비어 있음 | private 레포 인증 없이 compose 팩으로 생성 → 레포를 public 으로 두거나 GitHub App/Deploy Key 연결 후 재생성 |
 
 ## 11. 리소스 가이드
 
