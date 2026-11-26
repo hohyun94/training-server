@@ -15,8 +15,23 @@ import { playRouter } from './routes/play.js';
 import { publicRouter } from './routes/public.js';
 
 if (process.env.RUN_MIGRATIONS !== 'false') {
+  /** DB 컨테이너가 늦게 뜨는 경우가 많아 부팅 시 몇 번 재시도한다. */
+  const migrateWithRetry = async (attempts = 10, delayMs = 3000): Promise<void> => {
+    for (let attempt = 1; attempt <= attempts; attempt += 1) {
+      try {
+        await runMigrations();
+        return;
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        if (attempt === attempts) throw err;
+        console.error(`[server] 마이그레이션 실패 (${attempt}/${attempts}) — 3초 후 재시도: ${message}`);
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+      }
+    }
+  };
+
   try {
-    await runMigrations();
+    await migrateWithRetry();
   } catch (err) {
     console.error('[server] 마이그레이션 실패로 시작할 수 없습니다.', err);
     await pool.end();
